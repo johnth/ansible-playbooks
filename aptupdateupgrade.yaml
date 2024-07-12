@@ -1,9 +1,23 @@
----
-- hosts: all
-  become: yes
+- hosts: Servarrs
+  vars_files:
+    ~/ansible_vars/vars.yml
+  vars:
+    ansible_become_pass: '{{ansible_password}}'
   tasks: 
+      
   - name: Update Packages
+    become: true
     apt:
       upgrade: yes
       update_cache: yes
       cache_valid_time: 3600    # update cache if more than an hour old
+ 
+  - name: check reboot is required
+    ansible.builtin.stat:
+      path: /var/run/reboot-required
+      get_checksum: no
+    register: reboot_required_file
+
+  - name: reboot the server (if required)
+    ansible.builtin.reboot:
+    when: reboot_required_file.stat.exists == true
