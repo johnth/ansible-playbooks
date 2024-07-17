@@ -1,4 +1,4 @@
-- hosts: DNS
+- hosts: all
   vars_files:
     ~/ansible_vars/vars.yml
   vars:
