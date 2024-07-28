@@ -1,0 +1,11 @@
+---
+- hosts: Plex
+  gather_facts: yes
+  become: false
+  tasks:
+  - name: linux servers
+    when: ansible_facts['os_family'] == 'Debian'
+    debug: msg="{{ ansible_facts['os_family'] }}"
+  - name: Windows Servers
+    when: ansible_facts['os_family'] == 'Windows'
+    debug: msg="{{ ansible_facts['os_family'] }}"
